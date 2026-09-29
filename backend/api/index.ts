@@ -4,7 +4,7 @@ import { connectMaster } from '../src/db/master.js';
 let isConnected = false;
 const app = createApp();
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   if (!isConnected) {
     try {
       await connectMaster();
