@@ -1,0 +1,13 @@
+﻿Verify Filling 926793
+"Verification Road, Karachi"
+Sales Report (This Month)
+Date range: 01 Sep 2026 - 17 Sep 2026
+Generated: 17 Sep 2026 06:35
+
+Date / Time,Invoice,Fuel,Liters,Rate,Amount,Cost,Gross Profit,Payment,Customer,Cashier
+2026-09-17 06:35,INV-20260917-0003,Verify Super,40,310.00,"12,400.00","11,200.00","1,200.00",credit,Verify Credit Co,Verify Owner
+2026-09-17 06:35,INV-20260917-0002,Verify Super,50,300.00,"15,000.00","14,000.00","1,000.00",card,-,Verify Owner
+2026-09-17 06:35,INV-20260917-0001,Verify Super,100,310.00,"31,000.00","28,000.00","3,000.00",cash,-,Verify Owner
+TOTAL,,,190,,"58,400.00","53,200.00","5,200.00",,,
+
+Line profit is gross (amount - fuel cost). Estimated Profit below also deducts operating expenses.
