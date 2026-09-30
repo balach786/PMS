@@ -189,7 +189,7 @@ export default function Dashboard() {
       </Card>
 
       {/* ── KPI cards (section 11) ─────────────────────────────────────── */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3 xl:grid-cols-6">
         <StatCard
           label="Total Sales"
           value={loading ? '' : currency(data?.kpis.totalSales ?? 0)}
@@ -266,7 +266,7 @@ export default function Dashboard() {
 
         <div className="rounded-xl border border-navy-800 bg-navy-900 p-4 sm:p-5 shadow-sm lg:col-span-2">
           <p className="text-xs font-medium uppercase tracking-wide text-ink-300">Quick Info</p>
-          <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <p className="flex items-center gap-1.5 text-xs text-ink-400">
                 <CreditCard className="h-3.5 w-3.5" /> Credit Outstanding
