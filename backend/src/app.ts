@@ -62,29 +62,51 @@ export function createApp() {
 
   // Temporary debug endpoint - REMOVE after fixing deployment
   app.get('/debug/db-check', async (_req, res) => {
+    const report: Record<string, unknown> = {
+      mongoUri: process.env.MONGODB_URI ? `${process.env.MONGODB_URI.slice(0, 25)}...` : 'NOT SET',
+      masterDbName: process.env.MASTER_DB_NAME || 'NOT SET',
+      nodeEnv: process.env.NODE_ENV || 'NOT SET',
+      clientUrl: process.env.CLIENT_URL || 'NOT SET',
+      jwtSecret: process.env.JWT_SECRET ? 'SET' : 'NOT SET',
+    };
     try {
       const { connectMaster } = await import('./db/master.js');
-      const { conn } = await connectMaster();
+      const { conn, Pump } = await connectMaster();
+      report.dbState = conn.readyState;
       const collections = await conn.db!.listCollections().toArray();
-      res.json({
-        success: true,
-        data: {
-          mongoUri: process.env.MONGODB_URI ? `${process.env.MONGODB_URI.slice(0, 25)}...` : 'NOT SET',
-          masterDbName: process.env.MASTER_DB_NAME || 'NOT SET',
-          nodeEnv: process.env.NODE_ENV || 'NOT SET',
-          clientUrl: process.env.CLIENT_URL || 'NOT SET',
-          jwtSecret: process.env.JWT_SECRET ? 'SET' : 'NOT SET',
-          dbState: conn.readyState,
-          collections: collections.map((c: any) => c.name),
-        },
-      });
+      report.masterCollections = collections.map((c: any) => c.name);
+
+      // Check if any pumps exist
+      const pumps = await Pump.find({}).lean();
+      report.pumpCount = pumps.length;
+      report.pumps = pumps.map((p: any) => ({
+        name: p.name,
+        slug: p.slug,
+        databaseName: p.databaseName,
+        email: p.email,
+        loginEmails: p.loginEmails,
+        status: p.status,
+      }));
+
+      // Try connecting to the first pump's tenant DB
+      if (pumps.length > 0) {
+        try {
+          const { getTenant } = await import('./db/tenant.js');
+          const models = await getTenant(pumps[0].databaseName);
+          const users = await models.User.find({}).select('name email role active').lean();
+          report.tenantDbConnected = true;
+          report.tenantUsers = users;
+        } catch (tenantErr: any) {
+          report.tenantDbConnected = false;
+          report.tenantError = tenantErr.message;
+        }
+      }
+
+      res.json({ success: true, data: report });
     } catch (err: any) {
-      res.status(500).json({
-        success: false,
-        error: err.message,
-        code: err.code || err.codeName || 'UNKNOWN',
-        stack: err.stack?.split('\n').slice(0, 5),
-      });
+      report.error = err.message;
+      report.code = err.code || err.codeName || 'UNKNOWN';
+      res.status(500).json({ success: false, data: report });
     }
   });
 
