@@ -60,6 +60,34 @@ export function createApp() {
     res.json({ success: true, data: { status: 'ok', uptime: process.uptime(), time: new Date().toISOString() } });
   });
 
+  // Temporary debug endpoint - REMOVE after fixing deployment
+  app.get('/debug/db-check', async (_req, res) => {
+    try {
+      const { connectMaster } = await import('./db/master.js');
+      const { conn } = await connectMaster();
+      const collections = await conn.db!.listCollections().toArray();
+      res.json({
+        success: true,
+        data: {
+          mongoUri: process.env.MONGODB_URI ? `${process.env.MONGODB_URI.slice(0, 25)}...` : 'NOT SET',
+          masterDbName: process.env.MASTER_DB_NAME || 'NOT SET',
+          nodeEnv: process.env.NODE_ENV || 'NOT SET',
+          clientUrl: process.env.CLIENT_URL || 'NOT SET',
+          jwtSecret: process.env.JWT_SECRET ? 'SET' : 'NOT SET',
+          dbState: conn.readyState,
+          collections: collections.map((c: any) => c.name),
+        },
+      });
+    } catch (err: any) {
+      res.status(500).json({
+        success: false,
+        error: err.message,
+        code: err.code || err.codeName || 'UNKNOWN',
+        stack: err.stack?.split('\n').slice(0, 5),
+      });
+    }
+  });
+
   app.use('/api/v1', routes);
 
   app.use('/api/v1', notFoundHandler);
