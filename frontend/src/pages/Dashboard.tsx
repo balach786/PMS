@@ -239,17 +239,17 @@ export default function Dashboard() {
 
       {/* ── Last 7 days + quick info (sections 19 / 20) ─────────────────── */}
       <div className="mt-3 grid gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-3">
-        <Card className="p-4 sm:p-5">
+        <div className="rounded-xl border border-navy-800 bg-navy-900 p-4 sm:p-5 shadow-sm">
           <div className="flex items-start justify-between">
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-ink-500">Last 7 Days Sales</p>
-              <p className="mt-1 text-2xl font-bold text-navy-900">
+              <p className="text-xs font-medium uppercase tracking-wide text-ink-300">Last 7 Days Sales</p>
+              <p className="mt-1 text-2xl font-bold text-white break-words">
                 {loading ? '—' : currency(last7?.total ?? 0)}
               </p>
             </div>
             <span
               className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold ${
-                last7Up ? 'bg-lime-400/15 text-lime-600' : 'bg-red-50 text-red-600'
+                last7Up ? 'bg-lime-400/20 text-lime-400' : 'bg-red-500/20 text-red-400'
               }`}
             >
               {last7Up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
@@ -257,49 +257,49 @@ export default function Dashboard() {
             </span>
           </div>
           <div className="mt-2">
-            <Sparkline data={last7?.series ?? []} color={last7Up ? '#639C14' : '#DC2626'} />
+            <Sparkline data={last7?.series ?? []} color={last7Up ? '#7CBF1C' : '#EF4444'} />
           </div>
           <p className="mt-1 text-xs text-ink-400">
             Previous 7 days: {loading ? '—' : currency(last7?.previousTotal ?? 0)}
           </p>
-        </Card>
+        </div>
 
-        <Card className="p-4 sm:p-5 lg:col-span-2">
-          <p className="text-xs font-medium uppercase tracking-wide text-ink-500">Quick Info</p>
+        <div className="rounded-xl border border-navy-800 bg-navy-900 p-4 sm:p-5 shadow-sm lg:col-span-2">
+          <p className="text-xs font-medium uppercase tracking-wide text-ink-300">Quick Info</p>
           <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div>
-              <p className="flex items-center gap-1.5 text-xs text-ink-500">
+              <p className="flex items-center gap-1.5 text-xs text-ink-400">
                 <CreditCard className="h-3.5 w-3.5" /> Credit Outstanding
               </p>
-              <p className="mt-1 text-lg font-bold text-navy-900">
+              <p className="mt-1 text-lg font-bold text-white break-words">
                 {loading ? '—' : currency(data?.quickInfo.creditOutstanding ?? 0)}
               </p>
             </div>
             <div>
-              <p className="flex items-center gap-1.5 text-xs text-ink-500">
+              <p className="flex items-center gap-1.5 text-xs text-ink-400">
                 <Users className="h-3.5 w-3.5" /> Total Customers
               </p>
-              <p className="mt-1 text-lg font-bold text-navy-900">
+              <p className="mt-1 text-lg font-bold text-white break-words">
                 {loading ? '—' : number(data?.quickInfo.totalCustomers ?? 0)}
               </p>
             </div>
             <div>
-              <p className="flex items-center gap-1.5 text-xs text-ink-500">
+              <p className="flex items-center gap-1.5 text-xs text-ink-400">
                 <Truck className="h-3.5 w-3.5" /> Active Suppliers
               </p>
-              <p className="mt-1 text-lg font-bold text-navy-900">
+              <p className="mt-1 text-lg font-bold text-white break-words">
                 {loading ? '—' : number(data?.quickInfo.activeSuppliers ?? 0)}
               </p>
             </div>
             <div>
-              <p className="flex items-center gap-1.5 text-xs text-ink-500">
+              <p className="flex items-center gap-1.5 text-xs text-ink-400">
                 <FuelIcon className="h-3.5 w-3.5" /> Fuel Types
               </p>
-              <p className="mt-1 text-lg font-bold text-navy-900">
+              <p className="mt-1 text-lg font-bold text-white break-words">
                 {loading ? '—' : number(data?.quickInfo.totalFuelTypes ?? 0)}
               </p>
               {Boolean(data?.quickInfo.lowStockFuels) && (
-                <p className="mt-0.5 flex items-center gap-1 text-xs text-red-600">
+                <p className="mt-0.5 flex items-center gap-1 text-xs text-red-400">
                   <AlertTriangle className="h-3 w-3" /> {data?.quickInfo.lowStockFuels} low
                 </p>
               )}

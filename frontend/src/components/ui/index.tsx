@@ -493,25 +493,25 @@ export function StatCard({
   loading?: boolean;
 }) {
   const tones = {
-    navy: 'bg-navy-50 text-navy-700',
-    gold: 'bg-gold-100 text-gold-700',
-    green: 'bg-lime-400/15 text-lime-600',
-    red: 'bg-red-50 text-red-600',
+    navy: 'bg-navy-800 text-gold-400',
+    gold: 'bg-gold-500/20 text-gold-400',
+    green: 'bg-lime-400/20 text-lime-400',
+    red: 'bg-red-500/20 text-red-400',
   };
   return (
-    <div className="card p-4 sm:p-5">
+    <div className="rounded-xl border border-navy-800 bg-navy-900 p-4 sm:p-5 shadow-sm">
       <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="truncate text-xs font-medium uppercase tracking-wide text-ink-500">{label}</p>
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-medium uppercase tracking-wide text-ink-300 break-words">{label}</p>
           {loading ? (
             <>
-              <Skeleton className="mt-2.5 h-7 w-28" />
-              <Skeleton className="mt-2 h-3 w-20" />
+              <Skeleton className="mt-2.5 h-7 w-28 opacity-20" />
+              <Skeleton className="mt-2 h-3 w-20 opacity-20" />
             </>
           ) : (
             <>
-              <p className="mt-1.5 truncate text-xl font-bold text-navy-900 sm:text-2xl">{value}</p>
-              {sub && <p className="mt-1 text-xs text-ink-500">{sub}</p>}
+              <p className="mt-1.5 text-xl font-bold text-white sm:text-2xl break-words">{value}</p>
+              {sub && <p className="mt-1 text-xs text-ink-400 break-words">{sub}</p>}
             </>
           )}
         </div>
