@@ -26,6 +26,8 @@ export function createApp() {
         // allow non-browser clients (curl / server-to-server) and configured origins
         if (!origin) return callback(null, true);
         if (corsOrigins.includes('*') || corsOrigins.includes(origin)) return callback(null, true);
+        // allow any Vercel preview/production deployment
+        if (/\.vercel\.app$/.test(origin)) return callback(null, true);
         // allow the e2b preview host pattern in development
         if (env.nodeEnv !== 'production' && /\.e2b\.app$/.test(origin)) return callback(null, true);
         return callback(null, false);

@@ -130,10 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(() => {
     // best effort notify the server, then always clear local state
-    void fetch('/api/v1/auth/logout', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${getToken() ?? ''}` },
-    }).catch(() => undefined);
+    void http.post('/auth/logout').catch(() => undefined);
     clear();
   }, [clear]);
 

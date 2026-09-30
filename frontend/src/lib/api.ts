@@ -1,11 +1,16 @@
 import axios, { AxiosError } from 'axios';
 
 /**
- * Relative base URL: in development the Vite dev server proxies /api to the
- * Express backend, in production the same origin serves both.
+ * Base URL for the API.
+ * - VITE_API_URL env var takes priority (set in Vercel Dashboard)
+ * - In production, falls back to the deployed backend on Vercel
+ * - In development, the Vite dev server proxies /api to the Express backend
  */
+const PROD_API = 'https://pms-q8s4.vercel.app/api/v1';
+const isDev = import.meta.env.DEV;
+
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api/v1',
+  baseURL: import.meta.env.VITE_API_URL || (isDev ? '/api/v1' : PROD_API),
   timeout: 30000,
   headers: { 'Content-Type': 'application/json' },
 });
